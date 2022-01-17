@@ -24,14 +24,18 @@ try:
         #     print(p)
 
         page=1
-        while page!=30:
+        numberOfArticles=0
+        while numberOfArticles <= 30:
             try:
-                # print(page)
+
                 response_per_page = requests.get('https://bg.annapurnapost.com/api/tags/news?page=' + str(page) + '&per_page=20&tag=' + str(passed_argument))
                 if not response_per_page:
                     break
                 result.append(response_per_page.json()['data'])
+                numberOfArticles+=len(response_per_page.json()['data'])
+
                 page +=1
+
             except:
                 break
 
