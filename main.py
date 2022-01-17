@@ -45,7 +45,8 @@ try:
         json_string = json.dumps(result)
         # print(len(json_string))
         print('JSON object')
-        print(json_string)
+        print('JSON:\n'+json_string+'\n')
+        print('Total number of articles:\t'+str(numberOfArticles))
     except:
         print("No news found")
 except:
