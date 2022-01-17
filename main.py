@@ -2,28 +2,48 @@ import requests
 import json
 import sys
 
+#added for Devanagari support
+sys.stdin.reconfigure(encoding='utf-8')
+sys.stdout.reconfigure(encoding='utf-8')
+
+
 try:
     n=len(sys.argv)
     passed_argument=sys.argv[1]
     try:
-        response = requests.get('https://bg.annapurnapost.com/api/tags/news?per_page=20&tag='+ str(passed_argument))
-        pages=response.json()['totalPage']
-        print('Total Pages'+str(pages))
+        # response = requests.get('https://bg.annapurnapost.com/api/tags/news?per_page=20&tag='+ str(passed_argument))
+        # pages=response.json()['totalPage']
+        # print('Total Pages'+str(pages))
         result=[]
-        for page in range(1,int(pages)+1):
+        # p=3
 
-            response_per_page=requests.get('https://bg.annapurnapost.com/api/tags/news?page='+str(page)+'&per_page=20&tag='+str(passed_argument))
+        # for page in range(1,int(p)+1):
+        #     response_per_page=requests.get('https://bg.annapurnapost.com/api/tags/news?page='+str(page)+'&per_page=20&tag='+ str(passed_argument))
+        #     result.append(response_per_page.json()['data'])
+        #     p=response_per_page.json()['totalPage']
+        #     print(p)
 
-            result.append(response_per_page.json()['data'])
+        page=1
+        while page!=30:
+            try:
+                # print(page)
+                response_per_page = requests.get('https://bg.annapurnapost.com/api/tags/news?page=' + str(page) + '&per_page=20&tag=' + str(passed_argument))
+                if not response_per_page:
+                    break
+                result.append(response_per_page.json()['data'])
+                page +=1
+            except:
+                break
+
 
         if not result:
             exit()
-        print(result)
         json_string = json.dumps(result)
+        # print(len(json_string))
         print('JSON object')
         print(json_string)
     except:
-        print("No such news found")
+        print("No news found")
 except:
     print("No arguments passed")
 
